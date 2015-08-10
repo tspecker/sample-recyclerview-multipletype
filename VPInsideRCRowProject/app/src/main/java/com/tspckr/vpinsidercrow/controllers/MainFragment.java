@@ -77,25 +77,7 @@ public class MainFragment extends Fragment {
 
         mItemList = new ArrayList<>();
 
-        if (WITH_DELAY) {
-            ArrayList<Object> subList = createSubList();
-            ArrayList<Object> mainList = createMainList(subList);
-            mItemList.addAll(mainList);
-        } else {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ArrayList<Object> subList = createSubList();
-                    ArrayList<Object> mainList = createMainList(subList);
-                    mItemList.clear();
-                    mItemList.addAll(mainList);
-                    mAdapter.notifyDataSetChanged();
-                    checkAdapterIsEmpty();
-                }
-            }, 5000);
-        }
-
+        fillItemList();
 
         mAdapter = new RecyclerViewAdapter(mItemList, getChildFragmentManager());
         mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -112,6 +94,27 @@ public class MainFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         checkAdapterIsEmpty();
         return v;
+    }
+
+    private void fillItemList() {
+        if (WITH_DELAY) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<Object> subList = createSubList();
+                    ArrayList<Object> mainList = createMainList(subList);
+                    mItemList.clear();
+                    mItemList.addAll(mainList);
+                    mAdapter.notifyDataSetChanged();
+                    checkAdapterIsEmpty();
+                }
+            }, 5000);
+        } else {
+            ArrayList<Object> subList = createSubList();
+            ArrayList<Object> mainList = createMainList(subList);
+            mItemList.addAll(mainList);
+        }
     }
 
     private void checkAdapterIsEmpty() {
