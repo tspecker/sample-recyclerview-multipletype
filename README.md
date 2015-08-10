@@ -1,4 +1,4 @@
-# Android Sample project for a RecyclerView with Multiple Types
+# Sample RecyclerView with Multiple Types
 
 This is an Android sample project that implement a "RecyclerView" with multiple type.
 
