@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.tspckr.vpinsidercrow"
+        minSdkVersion 11
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    // ---- Local binary dependency (jars) ----
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // ---- Remote binary dependency ----
+    // google's library (android support)
+    compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+    // SuperSLiM library
+    // checkout 'https://github.com/TonicArtos/SuperSLiM' for more details
+    compile 'com.tonicartos:superslim:0.4.13'
+    // ViewPagerIndicator library
+    // checkout 'http://viewpagerindicator.com/' for more details or
+    // 'https://github.com/JakeWharton/ViewPagerIndicator'
+    compile('com.viewpagerindicator:library:2.4.1@aar') {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
+}
