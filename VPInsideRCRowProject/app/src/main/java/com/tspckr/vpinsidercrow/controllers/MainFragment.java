@@ -33,7 +33,7 @@ public class MainFragment extends Fragment {
     public static final String TAG = MainFragment.class.getName();
 
     private static final int NB_ITEMS = 9;
-    private static final int NB_ITEMS_ROWOBJ = 12;
+    private static final int NB_ITEMS_ROWOBJ = 5;
     private static final int NB_ITEMS_ROWLIST = 3;
     private static final boolean WITH_DELAY = true;
 

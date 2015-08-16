@@ -4,7 +4,7 @@
     xmlns:vpi="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/md_pink_100"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
@@ -19,8 +19,13 @@
         android:layout_height="wrap_content"
         android:paddingBottom="2dp"
         android:paddingTop="2dp"
-        vpi:fillColor="@color/primary"
-        vpi:pageColor="@color/primary_dark"
+        vpi:fillColor="@color/md_teal_900"
+        vpi:pageColor="@color/md_teal_200"
         vpi:radius="5dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divider" />
 
 </LinearLayout>
