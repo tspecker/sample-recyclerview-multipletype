@@ -2,7 +2,6 @@ package com.tspckr.vpinsidercrow.controllers;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.tspckr.vpinsidercrow.models.ModelObject;
@@ -14,12 +13,17 @@ import java.util.ArrayList;
  * Project : VPInsideRCRow
  * TODO Add a class header comment.
  */
-public class RowViewPagerAdapter extends FragmentPagerAdapter {
+public class RowViewPagerAdapter extends FragmentStatePagerAdapter {
     private final ArrayList<ModelObject> mPages;
 
-    public RowViewPagerAdapter(FragmentManager fragmentManager, ArrayList<ModelObject> pages) {
-        super(fragmentManager);
+    public RowViewPagerAdapter(FragmentManager fm, ArrayList<ModelObject> pages) {
+        super(fm);
         this.mPages = pages;
+    }
+
+    @Override
+    public int getItemPosition(Object item) {
+        return POSITION_NONE;
     }
 
     @Override
@@ -32,4 +36,5 @@ public class RowViewPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return mPages != null && !mPages.isEmpty() ? mPages.size() : 0;
     }
+
 }

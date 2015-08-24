@@ -1,5 +1,6 @@
 package com.tspckr.vpinsidercrow.controllers;
 
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -31,11 +32,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int VIEW_TYPE_LIST = 2;
     private static final int VIEW_TYPE_EMPTY = 3;
 
+    private static int mId = 0;
 
+    private final Context mContext;
     private final ArrayList<Object> mData;
     private final FragmentManager mFragmentManager;
 
-    public RecyclerViewAdapter(ArrayList<Object> mainList, FragmentManager fragmentManager) {
+    public RecyclerViewAdapter(Context context, ArrayList<Object> mainList, FragmentManager fragmentManager) {
+        this.mContext = context;
         this.mData = mainList;
         this.mFragmentManager = fragmentManager;
     }
@@ -64,11 +68,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case VIEW_TYPE_OBJ:
                 return new ViewHolderObj(inflater.inflate(R.layout.item_obj, viewGroup, false));
             case VIEW_TYPE_LIST:
-                return new ViewHolderList(inflater.inflate(R.layout.item_list, viewGroup, false), mFragmentManager);
+                return new ViewHolderList(inflater.inflate(R.layout.item_list, viewGroup, false), mFragmentManager, mId++);
             case VIEW_TYPE_EMPTY:
                 return new ViewHolderEmpty(inflater.inflate(R.layout.item_empty, viewGroup, false));
             default:
-                return new ViewHolderEmpty(inflater.inflate(R.layout.item_empty, viewGroup, false));
+                return null;
         }
     }
 
@@ -84,13 +88,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 bindViewHolderObj((ViewHolderObj) holder, (ModelObject) data);
                 break;
             case VIEW_TYPE_LIST:
-                bindViewHolderList((ViewHolderList) holder, (ModelList) data);
+                bindViewHolderList((ViewHolderList) holder, (ModelList) data, position);
                 break;
             case VIEW_TYPE_EMPTY:
                 bindViewHolderEmpty((ViewHolderEmpty) holder, (ModelEmpty) data);
                 break;
             default:
-                bindViewHolderEmpty((ViewHolderEmpty) holder, (ModelEmpty) data);
                 break;
         }
     }
@@ -115,10 +118,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         objView.setLayoutParams(params);
     }
 
-    private void bindViewHolderList(ViewHolderList holder, ModelList data) {
+    private void bindViewHolderList(ViewHolderList holder, ModelList data, int position) {
         LayoutManager.LayoutParams params;
         View listView = holder.itemView;
-        holder.bindItem(data);
+        holder.bindItem(data, position);
         params = LayoutManager.LayoutParams.from(listView.getLayoutParams());
         params.setSlm(LinearSLM.ID);
         params.setFirstPosition(data.mSectionFirstPosition);
@@ -168,6 +171,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private class ViewHolderList extends RecyclerView.ViewHolder {
         private final FragmentManager mFragmentManager;
+
         private ViewPager mViewPager;
         private CirclePageIndicator mCpi;
 
@@ -176,31 +180,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private ModelList mData;
 
 
-        public ViewHolderList(View view, FragmentManager fragmentManager) {
-            super(view);
-            this.mFragmentManager = fragmentManager;
-            mViewPager = (ViewPager) view.findViewById(R.id.rowViewPager);
-            mCpi = (CirclePageIndicator) view.findViewById(R.id.cpi);
-        }
+        public ViewHolderList(View itemView, FragmentManager fragmentManager, int i) {
+            super(itemView);
+            mFragmentManager = fragmentManager;
 
-        public void bindItem(ModelList data) {
-            this.mPages = new ArrayList<>();
-            this.mPages.addAll(data.mItems);
+            mViewPager = (ViewPager) itemView.findViewById(R.id.rowViewPager);
+            mCpi = (CirclePageIndicator) itemView.findViewById(R.id.cpi);
+            mViewPager.setId(i);
+            mCpi.setId(i);
 
-            fillData();
             // Instantiate a ViewPager and a PagerAdapter.
-//            mPages = new ArrayList<>();
-//            mPages.addAll(data.mItems);
-//            mPagerAdapter = new RowViewPagerAdapter(this.mFragmentManager, mPages);
-//            mViewPager.setAdapter(mPagerAdapter);
-//            mCpi.setViewPager(mViewPager);
-        }
-
-        public void fillData() {
-            // Instantiate a ViewPager and a PagerAdapter.
-            mPagerAdapter = new RowViewPagerAdapter(this.mFragmentManager, mPages);
+            mPages = new ArrayList<>();
+            mPagerAdapter = new RowViewPagerAdapter(mFragmentManager, mPages);
             mViewPager.setAdapter(mPagerAdapter);
             mCpi.setViewPager(mViewPager);
+        }
+
+        public void bindItem(ModelList data, int position) {
+            mPages.clear();
+            mPages.addAll(data.mItems);
+            mViewPager.getAdapter().notifyDataSetChanged();
         }
     }
 

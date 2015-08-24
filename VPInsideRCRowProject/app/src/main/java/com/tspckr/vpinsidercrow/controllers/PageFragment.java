@@ -37,17 +37,18 @@ public class PageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mText = getArguments().getString(EXTRA_TEXT);
+        if (getArguments() != null)
+            mText = getArguments().getString(EXTRA_TEXT);
     }
 
     // Inflate the view for the fragment based on layout XML
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        int id = container.getId();
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         TextView tvText = (TextView) view.findViewById(R.id.tvPageContent);
         tvText.setText(mText);
         return view;
     }
-
 }

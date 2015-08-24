@@ -33,9 +33,15 @@ public class MainFragment extends Fragment {
     public static final String TAG = MainFragment.class.getName();
 
     private static final int NB_ITEMS = 9;
-    private static final int NB_ITEMS_ROWOBJ = 5;
+    private static final int NB_ITEMS_ROWOBJ = 0;
     private static final int NB_ITEMS_ROWLIST = 3;
-    private static final boolean WITH_DELAY = true;
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private static boolean WITH_DELAY = false;
+    @SuppressWarnings("FieldCanBeLocal")
+    private static boolean TYPE_ROWOBJ = false;
+    @SuppressWarnings("FieldCanBeLocal")
+    private static boolean TYPE_ROWLIST = true;
 
     private View v;
     private RecyclerView mRecyclerView;
@@ -79,7 +85,7 @@ public class MainFragment extends Fragment {
 
         fillItemList();
 
-        mAdapter = new RecyclerViewAdapter(mItemList, getChildFragmentManager());
+        mAdapter = new RecyclerViewAdapter(getActivity(), mItemList, getChildFragmentManager());
         mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -97,7 +103,7 @@ public class MainFragment extends Fragment {
     }
 
     private void fillItemList() {
-        if (WITH_DELAY) {
+        if (WITH_DELAY) { // apply a delay for simulate a network response
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -156,16 +162,26 @@ public class MainFragment extends Fragment {
 
     private ArrayList<Object> createSubList() {
         ArrayList<Object> subList = new ArrayList<>();
-        for (int i = 0; i < NB_ITEMS; i++) {
-            if (i % 2 > 0) {
-                subList.add(createModelRowList(i));
-            } else {
-                subList.add(createModelRowObj(i));
+        if (TYPE_ROWOBJ || TYPE_ROWLIST) {
+            for (int i = 0; i < NB_ITEMS; i++) {
+                if (TYPE_ROWOBJ)
+                    subList.add(createModelRowObj(i));
+                else
+                    subList.add(createModelRowList(i));
+            }
+        } else { // Both type
+            for (int i = 0; i < NB_ITEMS; i++) {
+                if (i % 2 > 0) {
+                    subList.add(createModelRowList(i));
+                } else {
+                    subList.add(createModelRowObj(i));
+                }
             }
         }
         return subList;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private ModelRowObject createModelRowObj(int x) {
         ArrayList<ModelObject> items = new ArrayList<>();
         for (int i = 0; i < NB_ITEMS_ROWOBJ; i++) {
@@ -175,7 +191,7 @@ public class MainFragment extends Fragment {
         return new ModelRowObject(new ModelHeader("Title " + x), items);
     }
 
-
+    @SuppressWarnings("ConstantConditions")
     private ModelRowList createModelRowList(int x) {
         ArrayList<ModelObject> items = new ArrayList<>();
         for (int i = 0; i < NB_ITEMS_ROWLIST; i++) {
