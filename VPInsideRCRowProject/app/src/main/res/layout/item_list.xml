@@ -7,11 +7,17 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/rowViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        tools:layout_height="80dp" />
+    <!--<android.support.v4.view.ViewPager-->
+    <!--android:id="@+id/rowViewPager"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="40dp"-->
+    <!--tools:layout_height="40dp" />-->
+
+    <com.tspckr.vpinsidercrow.controllers.RowViewPager
+    android:id="@+id/rowViewPager"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    tools:layout_height="40dp" />
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/cpi"

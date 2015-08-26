@@ -1,7 +1,5 @@
 package com.tspckr.vpinsidercrow.models;
 
-import java.util.ArrayList;
-
 /**
  * Created by tspecker on 08/08/15. <br/>
  * Project : VPInsideRCRow

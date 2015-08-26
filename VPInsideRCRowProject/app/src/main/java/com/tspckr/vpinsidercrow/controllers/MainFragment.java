@@ -32,12 +32,12 @@ public class MainFragment extends Fragment {
 
     public static final String TAG = MainFragment.class.getName();
 
-    private static final int NB_ITEMS = 9;
+    private static final int NB_ITEMS = 99;
     private static final int NB_ITEMS_ROWOBJ = 0;
-    private static final int NB_ITEMS_ROWLIST = 3;
+    private static final int NB_ITEMS_ROWLIST = 4;
 
     @SuppressWarnings("FieldCanBeLocal")
-    private static boolean WITH_DELAY = false;
+    private static boolean WITH_DELAY = true;
     @SuppressWarnings("FieldCanBeLocal")
     private static boolean TYPE_ROWOBJ = false;
     @SuppressWarnings("FieldCanBeLocal")
@@ -82,10 +82,9 @@ public class MainFragment extends Fragment {
         findView();
 
         mItemList = new ArrayList<>();
-
+        mAdapter = new RecyclerViewAdapter(getActivity(), mItemList, getChildFragmentManager());
         fillItemList();
 
-        mAdapter = new RecyclerViewAdapter(getActivity(), mItemList, getChildFragmentManager());
         mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -108,18 +107,11 @@ public class MainFragment extends Fragment {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ArrayList<Object> subList = createSubList();
-                    ArrayList<Object> mainList = createMainList(subList);
-                    mItemList.clear();
-                    mItemList.addAll(mainList);
-                    mAdapter.notifyDataSetChanged();
-                    checkAdapterIsEmpty();
+                    createItemList();
                 }
             }, 5000);
         } else {
-            ArrayList<Object> subList = createSubList();
-            ArrayList<Object> mainList = createMainList(subList);
-            mItemList.addAll(mainList);
+            createItemList();
         }
     }
 
@@ -134,6 +126,15 @@ public class MainFragment extends Fragment {
     private void findView() {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.rvMultiType);
         mEmptyView = (RelativeLayout) v.findViewById(R.id.rlEmpty);
+    }
+
+    private void createItemList() {
+        ArrayList<Object> subList = createSubList();
+        ArrayList<Object> mainList = createMainList(subList);
+        mItemList.clear();
+        mItemList.addAll(mainList);
+        assert mAdapter != null;
+        mAdapter.notifyDataSetChanged();
     }
 
     private ArrayList<Object> createMainList(ArrayList<Object> sublist) {
@@ -185,7 +186,7 @@ public class MainFragment extends Fragment {
     private ModelRowObject createModelRowObj(int x) {
         ArrayList<ModelObject> items = new ArrayList<>();
         for (int i = 0; i < NB_ITEMS_ROWOBJ; i++) {
-            items.add(new ModelObject("Text " + x + "." + i));
+            items.add(new ModelObject(i, "Text " + x + "." + i));
         }
         items.add(new ModelEmpty());
         return new ModelRowObject(new ModelHeader("Title " + x), items);
@@ -195,8 +196,8 @@ public class MainFragment extends Fragment {
     private ModelRowList createModelRowList(int x) {
         ArrayList<ModelObject> items = new ArrayList<>();
         for (int i = 0; i < NB_ITEMS_ROWLIST; i++) {
-            items.add(new ModelObject("Text " + x + "." + i));
+            items.add(new ModelObject(i, "Text " + x + "." + i));
         }
-        return new ModelRowList(new ModelHeader("Title " + x), new ModelList(items));
+        return new ModelRowList(new ModelHeader("Title " + x), new ModelList(x, items));
     }
 }

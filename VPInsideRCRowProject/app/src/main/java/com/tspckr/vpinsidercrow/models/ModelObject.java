@@ -7,6 +7,7 @@ package com.tspckr.vpinsidercrow.models;
  */
 public class ModelObject extends ModelSection {
 
+    public int mId;
     public String mText;
 
     public ModelObject() {
@@ -16,7 +17,8 @@ public class ModelObject extends ModelSection {
         super(position);
     }
 
-    public ModelObject(String mText) {
+    public ModelObject(int i, String mText) {
+        this.mId = i;
         this.mText = mText;
     }
 }

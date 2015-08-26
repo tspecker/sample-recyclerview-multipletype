@@ -9,9 +9,11 @@ import java.util.ArrayList;
  */
 public class ModelList extends ModelSection {
 
+    public int mId;
     public ArrayList<ModelObject> mItems;
 
-    public ModelList(ArrayList<ModelObject> mItems) {
+    public ModelList(int i, ArrayList<ModelObject> mItems) {
+        this.mId = i;
         this.mItems = mItems;
     }
 }

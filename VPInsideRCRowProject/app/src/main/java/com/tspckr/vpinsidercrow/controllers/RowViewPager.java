@@ -1,6 +1,7 @@
 package com.tspckr.vpinsidercrow.controllers;
 
 import android.content.Context;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
@@ -13,9 +14,8 @@ import com.viewpagerindicator.CirclePageIndicator;
  */
 public class RowViewPager extends ViewPager {
 
-
-    RowViewPagerAdapter mPagerAdapter;
-    CirclePageIndicator mPageIndicator;
+    private PagerAdapter mPagerAdapter;
+    private CirclePageIndicator mPagerIndicator;
 
     public RowViewPager(Context context) {
         super(context);
@@ -25,17 +25,19 @@ public class RowViewPager extends ViewPager {
         super(context, attrs);
     }
 
+
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (mPagerAdapter != null) {
             super.setAdapter(mPagerAdapter);
-            mPageIndicator.setViewPager(this);
+            mPagerIndicator.setViewPager(this);
         }
     }
 
-    public void storeAdapter(RowViewPagerAdapter adapter, CirclePageIndicator pagerIndicator) {
+    public void storeAdapter(PagerAdapter adapter, CirclePageIndicator pagerIndicator) {
         mPagerAdapter = adapter;
-        mPageIndicator = pagerIndicator;
+        mPagerIndicator = pagerIndicator;
     }
 }
